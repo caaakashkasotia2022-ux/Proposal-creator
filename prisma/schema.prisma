@@ -1,0 +1,265 @@
+// IDCUBE Proposal System – database schema
+//
+// Local development uses SQLite. For production switch `provider` to
+// "postgresql" and point DATABASE_URL at PostgreSQL / Supabase
+// (see docs/DEPLOYMENT.md). The schema avoids SQLite-incompatible
+// features (enums, scalar lists) so it works unchanged on both.
+//
+// Enum-like string fields:
+//   User.role            ADMIN | SALES | VIEWER
+//   Product.status       ACTIVE | INACTIVE
+//   Product.source       SHEET | APP | SAMPLE
+//   Proposal.type        CUSTOMER | SI
+//   Proposal.status      DRAFT | SENT | APPROVED | REJECTED | EXPIRED
+//   Proposal.discountType PERCENT | AMOUNT
+//   Proposal.supplyType  INTRA (CGST+SGST) | INTER (IGST) | NONE (no GST)
+//   EmailLog.status      SENT | FAILED
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(cuid())
+  name              String
+  email             String   @unique
+  passwordHash      String
+  role              String   @default("SALES")
+  canOverridePrice  Boolean  @default(false)
+  canAddProducts    Boolean  @default(false)
+  active            Boolean  @default(true)
+  designation       String?
+  phone             String?
+  lastLoginAt       DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  proposals         Proposal[]              @relation("PreparedBy")
+  statusChanges     ProposalStatusHistory[]
+  priceOverrides    PriceOverride[]
+  emails            EmailLog[]
+  auditLogs         AuditLog[]
+}
+
+model Customer {
+  id              String   @id @default(cuid())
+  companyName     String
+  contactPerson   String?
+  email           String?
+  phone           String?
+  billingAddress  String?
+  shippingAddress String?
+  gstin           String?
+  city            String?
+  state           String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  proposals       Proposal[]
+
+  @@index([companyName])
+}
+
+// Local cache of the Google Sheets product master. The sheet is the
+// source of truth for SHEET products; APP products were created in the
+// application (and written back to the sheet when configured).
+model Product {
+  id            String   @id @default(cuid())
+  itemCode      String   @unique
+  itemName      String
+  category      String   @default("General")
+  description   String   @default("")
+  configuration String   @default("")
+  unit          String   @default("Nos")
+  sellingPrice  Decimal
+  gstRate       Decimal  @default(18)
+  hsnSac        String?
+  brand         String?
+  status        String   @default("ACTIVE")
+  source        String   @default("SHEET")
+  sheetRow      Int?
+  lastSyncedAt  DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  proposalItems ProposalItem[]
+
+  @@index([status, category])
+  @@index([itemName])
+}
+
+model ProposalSequence {
+  id         String @id // e.g. "2026-27"
+  lastNumber Int    @default(0)
+}
+
+model Proposal {
+  id                 String   @id @default(cuid())
+  number             String   @unique
+  type               String   @default("CUSTOMER")
+  status             String   @default("DRAFT")
+
+  customerId         String?
+  customer           Customer? @relation(fields: [customerId], references: [id])
+
+  // Customer snapshot – frozen at the time of the proposal
+  customerName       String
+  contactPerson      String?
+  customerEmail      String?
+  customerPhone      String?
+  billingAddress     String?
+  shippingAddress    String?
+  customerGstin      String?
+
+  projectName        String?
+  proposalDate       DateTime
+  validityDays       Int      @default(30)
+  validUntil         DateTime
+
+  preparedById       String
+  preparedBy         User     @relation("PreparedBy", fields: [preparedById], references: [id])
+  preparedByName     String
+
+  introduction       String   @default("")
+  termsAndConditions String   @default("")
+  paymentTerms       String   @default("")
+  notes              String?
+
+  // Commercials (all server-calculated)
+  currency           String   @default("INR")
+  discountType       String   @default("PERCENT")
+  discountValue      Decimal  @default(0)
+  supplyType         String   @default("INTRA")
+  placeOfSupply      String?
+  subtotal           Decimal  @default(0)
+  discountAmount     Decimal  @default(0)
+  taxableAmount      Decimal  @default(0)
+  cgstAmount         Decimal  @default(0)
+  sgstAmount         Decimal  @default(0)
+  igstAmount         Decimal  @default(0)
+  taxTotal           Decimal  @default(0)
+  grandTotal         Decimal  @default(0)
+  taxBreakdown       String   @default("[]") // JSON snapshot of per-rate breakdown
+
+  duplicatedFromId   String?
+  sentAt             DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  items              ProposalItem[]
+  statusHistory      ProposalStatusHistory[]
+  priceOverrides     PriceOverride[]
+  emails             EmailLog[]
+
+  @@index([status])
+  @@index([customerName])
+  @@index([preparedById])
+}
+
+// Snapshot of each quoted line – never changes when the master changes.
+model ProposalItem {
+  id              String   @id @default(cuid())
+  proposalId      String
+  proposal        Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  sortOrder       Int
+  productId       String?
+  product         Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  itemCode        String?
+  itemName        String
+  category        String?
+  description     String   @default("")
+  configuration   String   @default("")
+  unit            String   @default("Nos")
+  hsnSac          String?
+  quantity        Decimal
+  masterPrice     Decimal? // master selling price at time of quoting
+  unitPrice       Decimal  // actual quoted rate
+  priceOverridden Boolean  @default(false)
+  gstRate         Decimal  @default(18)
+  lineTotal       Decimal  // quantity × unitPrice
+  discountShare   Decimal  @default(0)
+  taxableAmount   Decimal  @default(0)
+  taxAmount       Decimal  @default(0)
+
+  @@index([proposalId])
+}
+
+model ProposalStatusHistory {
+  id          String   @id @default(cuid())
+  proposalId  String
+  proposal    Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  fromStatus  String?
+  toStatus    String
+  note        String?
+  changedById String?
+  changedBy   User?    @relation(fields: [changedById], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@index([proposalId])
+}
+
+// Audit trail of every proposal-specific price change.
+model PriceOverride {
+  id             String   @id @default(cuid())
+  proposalId     String
+  proposal       Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  productId      String?
+  itemCode       String?
+  itemName       String
+  masterPrice    Decimal?
+  previousPrice  Decimal?
+  overridePrice  Decimal
+  reason         String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+
+  @@index([proposalId])
+}
+
+model EmailLog {
+  id          String   @id @default(cuid())
+  proposalId  String
+  proposal    Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  toAddress   String
+  ccAddress   String?
+  subject     String
+  body        String
+  attachments String   @default("")
+  status      String
+  error       String?
+  messageId   String?
+  sentById    String
+  sentBy      User     @relation(fields: [sentById], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@index([proposalId])
+}
+
+// Generic audit log – product master changes, user management, settings, sync runs.
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  details   String   @default("{}")
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

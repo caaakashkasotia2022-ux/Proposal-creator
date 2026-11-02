@@ -1,0 +1,80 @@
+@import "@fontsource-variable/inter";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brand palette (RGB triplets). Placeholder navy/indigo – replace with IDCUBE's official colours. */
+:root {
+  --brand-50: 238 242 255;
+  --brand-100: 224 231 255;
+  --brand-200: 199 210 254;
+  --brand-300: 165 180 252;
+  --brand-400: 129 140 248;
+  --brand-500: 79 97 228;
+  --brand-600: 55 72 205;
+  --brand-700: 42 56 170;
+  --brand-800: 33 45 136;
+  --brand-900: 30 41 103;
+  --brand-950: 17 24 62;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-slate-50 text-ink;
+    font-feature-settings: "cv11", "ss01", "tnum" 0;
+  }
+  ::selection {
+    @apply bg-brand-100 text-brand-900;
+  }
+}
+
+@layer components {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .card {
+    @apply rounded-2xl border border-slate-200/80 bg-white shadow-card;
+  }
+  .label {
+    @apply mb-1.5 block text-[12.5px] font-medium text-ink-soft;
+  }
+  .field {
+    @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-faint
+      transition-[border-color,box-shadow] duration-150 focus:border-brand-400 focus:outline-none focus:shadow-ring
+      disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-ink-muted;
+  }
+  .skeleton {
+    @apply rounded-md bg-slate-200/70;
+    background-image: linear-gradient(90deg, transparent 0, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
+    background-size: 400px 100%;
+    background-repeat: no-repeat;
+    animation: shimmer 1.4s linear infinite;
+  }
+  .scroll-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-300/70;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

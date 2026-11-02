@@ -1,0 +1,57 @@
+Item Code,Item Name,Category,Description,Configuration,Unit,Selling Price,GST %,HSN/SAC,Brand / Make,Status,Last Updated
+SMP-ACS-001,[SAMPLE] 2-Door IP Access Controller,Access Control,"IP-based door controller with on-board event buffer, PoE support and tamper input. Sample item for testing.","Doors: 2
+Readers supported: 4 (Wiegand / OSDP)
+Inputs: 8 | Outputs: 4
+Card holders: 50,000",Nos,38500,18,8471,Sample OEM,Active,2026-11-01
+SMP-ACS-002,[SAMPLE] 4-Door IP Access Controller,Access Control,"Four-door IP controller for medium sites with offline operation and anti-passback.","Doors: 4
+Readers supported: 8
+Inputs: 16 | Outputs: 8
+Card holders: 1,00,000",Nos,62000,18,8471,Sample OEM,Active,2026-11-01
+SMP-ACS-003,[SAMPLE] Single-Door Standalone Controller,Access Control,"Standalone controller for single-door applications with keypad backup.","Doors: 1
+Readers: 2",Nos,14500,18,8471,Sample OEM,Active,2026-11-01
+SMP-RDR-001,[SAMPLE] Proximity Card Reader (125 kHz),Readers,"Wall-mount proximity reader, IP65, Wiegand-26 output.","Read range: up to 8 cm
+Interface: Wiegand 26/34",Nos,4200,18,8471,Sample OEM,Active,2026-11-01
+SMP-RDR-002,[SAMPLE] MIFARE DESFire EV3 Reader,Readers,"Secure smart-card reader supporting DESFire EV3 and OSDP v2 secure channel.","Technology: 13.56 MHz
+Interface: OSDP v2 / Wiegand",Nos,7800,18,8471,Sample OEM,Active,2026-11-01
+SMP-RDR-003,[SAMPLE] Biometric Fingerprint + Card Reader,Readers,"Fingerprint and card reader with 3,000 template capacity and IP65 housing.","Templates: 3,000
+Modes: Finger / Card / Finger + Card",Nos,16500,18,8471,Sample OEM,Active,2026-11-01
+SMP-RDR-004,[SAMPLE] Face Recognition Terminal,Readers,"Touchless face recognition terminal with liveness detection, 5-inch display.","Faces: 10,000
+Liveness detection: Yes
+Mask detection: Yes",Nos,32000,18,8471,Sample OEM,Active,2026-11-01
+SMP-CRD-001,[SAMPLE] MIFARE Classic 1K ISO Card,Credentials,"Printable PVC ISO card, 13.56 MHz.",,Nos,95,18,8523,Sample OEM,Active,2026-11-01
+SMP-CRD-002,[SAMPLE] 125 kHz Proximity Card,Credentials,"Thin printable proximity card.",,Nos,55,18,8523,Sample OEM,Active,2026-11-01
+SMP-LCK-001,[SAMPLE] Electromagnetic Lock 600 lbs,Locks & Accessories,"Fail-safe EM lock with LED and lock-status sensor. Includes L & Z brackets.","Holding force: 600 lbs
+Voltage: 12/24 V DC",Nos,3800,18,8505,Sample OEM,Active,2026-11-01
+SMP-LCK-002,[SAMPLE] Drop Bolt Lock,Locks & Accessories,"Fail-safe drop bolt for glass doors.",,Nos,4600,18,8301,Sample OEM,Active,2026-11-01
+SMP-ACC-001,[SAMPLE] Exit Switch (No-Touch),Locks & Accessories,"Infrared no-touch exit switch with LED indication.",,Nos,950,18,8536,Sample OEM,Active,2026-11-01
+SMP-ACC-002,[SAMPLE] Emergency Break Glass,Locks & Accessories,"Resettable emergency door release.",,Nos,1150,18,8536,Sample OEM,Active,2026-11-01
+SMP-ACC-003,[SAMPLE] 12V 5A Power Supply with Battery Backup,Locks & Accessories,"Regulated access control power supply with battery charging.","Output: 12 V DC, 5 A
+Battery: 7.2 Ah (included)",Nos,4200,18,8504,Sample OEM,Active,2026-11-01
+SMP-SW-001,[SAMPLE] Access Control Software – Base License,Software,"Web-based access control management software base license.","Doors included: 32
+Operator logins: 3
+Modules: Access, Time Attendance basic",License,85000,18,997331,Sample OEM,Active,2026-11-01
+SMP-SW-002,[SAMPLE] Additional Door License,Software,"Add-on door license for access control software.","Per door",License,2500,18,997331,Sample OEM,Active,2026-11-01
+SMP-SW-003,[SAMPLE] Visitor Management Module,Software,"Visitor pre-registration, QR passes, host notifications and visitor logs.","Kiosks: 1
+Sites: 1",License,65000,18,997331,Sample OEM,Active,2026-11-01
+SMP-SW-004,[SAMPLE] Time & Attendance Module,Software,"Shift rules, leave integration and payroll exports.","Employees: up to 1,000",License,48000,18,997331,Sample OEM,Active,2026-11-01
+SMP-SW-005,[SAMPLE] Cloud Access Subscription (per door / year),Software,"Hosted access control with mobile admin app.","Billing: annual
+Minimum: 4 doors",Year,3600,18,998315,Sample OEM,Active,2026-11-01
+SMP-SW-006,[SAMPLE] HRMS / Payroll Integration,Software,"API integration connector for HRMS / payroll systems.","Integration: REST API
+One-time setup",Nos,40000,18,998314,Sample OEM,Active,2026-11-01
+SMP-ENT-001,[SAMPLE] Tripod Turnstile (SS 304),Entrance Control,"Bi-directional tripod turnstile with drop-arm for emergency.","Lanes: 1
+Finish: SS 304",Nos,145000,18,8479,Sample OEM,Active,2026-11-01
+SMP-ENT-002,[SAMPLE] Flap Barrier (Single Lane),Entrance Control,"Optical flap barrier with anti-tailgating sensors.","Lane width: 600 mm
+Throughput: 30 persons/min",Nos,265000,18,8479,Sample OEM,Active,2026-11-01
+SMP-ENT-003,[SAMPLE] Boom Barrier 4 m,Entrance Control,"Vehicle boom barrier with 4 m arm, 3-second opening.",Arm length: 4 m,Nos,98000,18,8479,Sample OEM,Active,2026-11-01
+SMP-ENT-004,[SAMPLE] UHF Long Range Reader,Entrance Control,"Vehicle identification reader, range up to 10 m.",Range: up to 10 m,Nos,42000,18,8471,Sample OEM,Active,2026-11-01
+SMP-ENT-005,[SAMPLE] UHF Windshield Tag,Credentials,"Tamper-evident windshield tag for vehicle access.",,Nos,350,18,8523,Sample OEM,Active,2026-11-01
+SMP-CCTV-001,[SAMPLE] 4 MP IP Dome Camera,Video Surveillance,"4 MP IR dome camera, H.265, 30 m IR.","Resolution: 4 MP
+Lens: 2.8 mm",Nos,6800,18,8525,Sample OEM,Active,2026-11-01
+SMP-CCTV-002,[SAMPLE] 16-Channel NVR,Video Surveillance,"Network video recorder with 2 SATA bays.","Channels: 16
+HDD bays: 2 (HDD not included)",Nos,24000,18,8521,Sample OEM,Active,2026-11-01
+SMP-SRV-001,[SAMPLE] Installation & Commissioning (per door),Services,"Mounting, termination, configuration and testing per door.","Excludes civil work and cabling",Door,3500,18,998739,Sample,Active,2026-11-01
+SMP-SRV-002,[SAMPLE] Software Implementation & Training,Services,"Software installation, database setup and 1-day on-site admin training.",Training days: 1,Lot,25000,18,998739,Sample,Active,2026-11-01
+SMP-SRV-003,[SAMPLE] Annual Maintenance Contract (Comprehensive),Services,"Comprehensive AMC with quarterly preventive visits and 8x5 support.","Duration: 12 months
+Preventive visits: 4",Year,60000,18,998719,Sample,Active,2026-11-01
+SMP-SRV-004,[SAMPLE] Cabling & Conduiting (per meter),Services,"Supply and laying of CAT6 cable in PVC conduit.",,Meter,85,18,998739,Sample,Active,2026-11-01
+SMP-OLD-001,[SAMPLE] Legacy Magstripe Reader (discontinued),Readers,"Discontinued – should not appear in search.",,Nos,2500,18,8471,Sample OEM,Inactive,2026-11-01
